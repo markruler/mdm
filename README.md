@@ -34,5 +34,6 @@ In VS Code, press `F5` to open a new window with your extension loaded.
 - [Your First Extention](https://code.visualstudio.com/api/get-started/your-first-extension)
 - [Extension Anatomy](https://code.visualstudio.com/api/get-started/extension-anatomy)
 - [Extension Guides](https://code.visualstudio.com/api/extension-guides/overview)
+- [Publishing Extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)
 - [What is the Simple Mail Transfer Protocol (SMTP)?](https://www.cloudflare.com/learning/email-security/what-is-smtp/)
   - [ko-kr](https://www.cloudflare.com/ko-kr/learning/email-security/what-is-smtp/)

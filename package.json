@@ -1,8 +1,19 @@
 {
   "name": "mdm",
+  "version": "0.1.0",
+	"publisher": "markruler",
+	"author": {
+		"name": "Changsu Im"
+	},
   "displayName": "Markdown Mail",
   "description": "Send markdown to mail",
-  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markruler/mdm.git"
+  },
+	"bugs": {
+		"url": "https://github.com/markruler/mdm/issues"
+	},
   "engines": {
     "vscode": "^1.75.0"
   },
