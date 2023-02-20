@@ -1,28 +1,27 @@
 import * as vscode from "vscode";
-import * as nodemailer from "nodemailer";
+import { SendMailOptions, createTransport } from "nodemailer";
+import { MdmOptions } from "./extension";
 
-let mailOptions = {
-  from: "imcxsu@gmail.com",
-  to: "imcxsu@gmail.com",
-  subject: "Hello ✔",
-  html: "",
-};
+export async function callMailer(html: string, mdmOptions: MdmOptions) {
+  if (mdmOptions.host === undefined || mdmOptions.port === undefined) {
+    const mailServer: string = await getMailServer();
+    console.log(`mailServer: ${mailServer}`);
 
-export async function callMailer(html: string, host: string, port: number) {
-  let transporter = nodemailer.createTransport({
-    host: host,
-    port: port,
+    const mailHostPort = mailServer.split(":");
+    mdmOptions.host = mailHostPort[0];
+    mdmOptions.port = parseInt(mailHostPort[1]);
+  }
+
+  let transporter = createTransport({
+    host: mdmOptions.host,
+    port: mdmOptions.port,
     secure: false, // true for 465, false for other ports
-    auth: {
-      // user: "imcxsu@gmail.com",
-      // pass: account.pass
-    },
   });
 
-  mailOptions.html = html;
+  let options: SendMailOptions = mdmOptions;
+  options.html = html;
 
-  await transporter.sendMail(mailOptions).then((info) => {
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  await transporter.sendMail(options).then((info) => {
     console.log("Message sent: %s", info.response);
   });
 }

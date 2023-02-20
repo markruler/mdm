@@ -34,6 +34,8 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.75.0",
+    "@types/markdown-it": "^12.2.3",
+    "@types/nodemailer": "^6.4.7",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "@vscode/test-electron": "^2.2.2",
@@ -43,9 +45,9 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@types/markdown-it": "^12.2.3",
-    "@types/nodemailer": "^6.4.7",
+    "front-matter": "^4.0.2",
     "markdown-it": "^13.0.1",
+    "markdown-it-front-matter": "^0.2.3",
     "nodemailer": "^6.9.1"
   }
 }
