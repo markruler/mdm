@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as MarkdownIt from "markdown-it";
 import { getMailServer, callMailer } from "./mailer";
+import { read } from "./reader";
 
 // ex: https://github.com/microsoft/vscode-extension-samples/blob/main/github-authentication-sample/src/extension.ts
 export async function activate(context: vscode.ExtensionContext) {
@@ -25,11 +26,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
     const activeFilePath = document.uri.path;
     const message = `# current file ${activeFilePath}`;
-
-    const html = md.render(message);
-    console.log(html);
+    console.log(message);
 
     console.log(`mailServer: ${mailServer}`);
+    const html = md.render(await read(activeFilePath));
     await callMailer(html, mailHostPort[0], parseInt(mailHostPort[1]));
 
     vscode.window.showInformationMessage(`Send to ${mailServer}`);
