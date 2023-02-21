@@ -4,6 +4,8 @@ Command `>mdm: Send markdown to mail` sends markdown file to mail.
 
 ## Front Matter
 
+### Own mail server
+
 This follows YAML front matter.
 For example, use double quotes to force a string.
 
@@ -12,6 +14,25 @@ For example, use double quotes to force a string.
 host: mail.example.com
 port: 25
 from: from@example.com
+to: to@example.com
+subject: "[This] is email subject"
+---
+
+# Markdown Mail
+```
+
+### Gmail
+
+[Turn on "Less secure app access"](https://myaccount.google.com/lesssecureapps).
+This setting is not available for accounts with 2-Step Verification enabled.
+
+> [Less secure apps & your Google Account](https://support.google.com/accounts/answer/6010255?hl=en#zippy=%2Cif-less-secure-app-access-is-on-for-your-account) - Google Account Help
+
+```markdown
+---
+host: smtp.gmail.com
+port: 587
+from: from@gmail.com
 to: to@example.com
 subject: "[This] is email subject"
 ---
