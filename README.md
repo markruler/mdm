@@ -4,13 +4,16 @@ Command `>mdm: Send markdown to mail` sends markdown file to mail.
 
 ## Front Matter
 
+This follows YAML front matter.
+For example, use double quotes to force a string.
+
 ```markdown
 ---
 host: mail.example.com
 port: 25
 from: from@example.com
 to: to@example.com
-subject: This is email subject
+subject: "[This] is email subject"
 ---
 
 # Markdown Mail
@@ -28,6 +31,12 @@ npm install
 
 ```sh
 npm run pretest
+```
+
+## Testing
+
+```sh
+npm test
 ```
 
 In VS Code, press `F5` to open a new window with your extension loaded.

@@ -1,43 +1,43 @@
 import * as vscode from "vscode";
 import { SendMailOptions, createTransport } from "nodemailer";
-import { MdmOptions } from "./extension";
+import { UserOption } from "./extension";
 
-export async function callMailer(html: string, mdmOptions: MdmOptions) {
-  if (mdmOptions.host === undefined || mdmOptions.port === undefined) {
-    const mailServer: string = await getMailServer();
-    console.log(`mailServer: ${mailServer}`);
-
-    const mailHostPort = mailServer.split(":");
-    mdmOptions.host = mailHostPort[0];
-    mdmOptions.port = parseInt(mailHostPort[1]);
-  }
-
-  let transporter = createTransport({
+/**
+ * Send mail
+ * @param body Mail body
+ * @param mdmOptions User options
+ */
+export async function sendMail(body: string, mdmOptions: UserOption) {
+  const transporter = createTransport({
     host: mdmOptions.host,
     port: mdmOptions.port,
-    secure: false, // true for 465, false for other ports
+    secure: mdmOptions.port === 465 ? true : false,
   });
 
-  let options: SendMailOptions = mdmOptions;
-  options.html = html;
+  const options: SendMailOptions = { ...mdmOptions, html: body };
 
   await transporter.sendMail(options).then((info) => {
     console.log("Message sent: %s", info.response);
   });
 }
 
+/**
+ * Return mail server from user input or configuration.
+ * @returns mailServer (host:port)
+ */
 export async function getMailServer() {
   let mailServer = await vscode.window.showInputBox({
     placeHolder: "host:port",
     prompt: "Set mail server (host:port)",
   });
 
-  mailServer =
-    mailServer || vscode.workspace.getConfiguration("mdm").get("mailServer");
-
-  if (mailServer === undefined) {
-    console.log("mailServer is undefined");
-    return "";
+  if (!mailServer) {
+    mailServer = vscode.workspace.getConfiguration("mdm").get("mailServer");
   }
+
+  if (!mailServer) {
+    throw new Error("mailServer is undefined");
+  }
+
   return mailServer;
 }

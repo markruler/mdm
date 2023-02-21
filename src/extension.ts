@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
 import * as MarkdownIt from "markdown-it";
-import { getMailServer, callMailer } from "./mailer";
-import { read } from "./reader";
-const frontMatter = require("front-matter");
+import { getMailServer, sendMail } from "./mailer";
+import { read, readMailOptions } from "./reader";
 
-export interface MdmOptions {
+export interface UserOption {
   host: string; // mail.example.com
   port: number; // 25, 465, 587
   from: string; // from@example.com
@@ -12,10 +11,14 @@ export interface MdmOptions {
   subject: string; // Title
 }
 
+/**
+ * Activate extension
+ * @param context Extension context
+ */
 export async function activate(context: vscode.ExtensionContext) {
-  console.log("activate");
+  console.log("Activate MDM");
 
-  const md: MarkdownIt = new MarkdownIt().use(
+  const markdown: MarkdownIt = new MarkdownIt().use(
     // Remove front matter
     require("markdown-it-front-matter"),
     function (frontMatter: string) {
@@ -36,22 +39,34 @@ export async function activate(context: vscode.ExtensionContext) {
     }
     console.log(`current file ${document.uri}`);
 
-    const originalText = (await read(document.uri)) || "";
-    const mailOptions: MdmOptions = frontMatter(originalText).attributes;
-    console.log("mailOptions", mailOptions);
+    const originalText: string = (await read(document.uri)) || "";
+    const userOption: UserOption = await readMailOptions(originalText);
+    console.log("User Option", userOption);
 
-    const html = md.render(originalText);
+    if (!userOption.host || !userOption.port) {
+      const mailServer: string = await getMailServer();
+      console.log(`mailServer: ${mailServer}`);
 
-    await callMailer(html, mailOptions);
+      const mailHostPort = mailServer.split(":");
+      userOption.host = mailHostPort[0];
+      userOption.port = parseInt(mailHostPort[1]);
+    }
+
+    const html = markdown.render(originalText);
+
+    await sendMail(html, userOption);
 
     vscode.window.showInformationMessage(
-      `Send to ${mailOptions.host}:${mailOptions.port}`
+      `Send to ${userOption.host}:${userOption.port}`
     );
   });
 
   context.subscriptions.push(send);
 }
 
+/**
+ * Deactivate extension
+ */
 export function deactivate() {
-  console.log("deactivate");
+  console.log("Deactivate MDM");
 }

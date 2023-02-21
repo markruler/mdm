@@ -1,9 +1,9 @@
 # Change Log
 
-All notable changes to the "mdm" extension will be documented in this file.
+## v0.1.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Fix [#1](https://github.com/markruler/mdm/issues/1)
 
-## [Unreleased]
+## v0.1.0
 
-- Initial release
+- Sending email using own email server
