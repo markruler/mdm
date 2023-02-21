@@ -47,6 +47,10 @@ code mdm
 ```
 
 ```sh
+rm -rf node_modules out
+```
+
+```sh
 npm install
 ```
 
