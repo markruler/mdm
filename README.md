@@ -26,6 +26,10 @@ code mdm
 npm install
 ```
 
+```sh
+npm run pretest
+```
+
 In VS Code, press `F5` to open a new window with your extension loaded.
 
 ## References

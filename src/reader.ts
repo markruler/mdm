@@ -1,9 +1,11 @@
-import { promises as fs } from "fs";
+import * as vscode from "vscode";
 
-export async function read(markdown: string) {
+export async function read(fileUri: vscode.Uri) {
   try {
-    return await fs.readFile(markdown, { encoding: "utf8" });
+    console.log("markdown path:", fileUri);
+		const readData = await vscode.workspace.fs.readFile(fileUri);
+		return Buffer.from(readData).toString('utf8');
   } catch (err) {
-    console.error(err);
+    console.error("[MDM]", "cannot read the file!", err);
   }
 }

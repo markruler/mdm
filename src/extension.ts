@@ -12,7 +12,6 @@ export interface MdmOptions {
   subject: string; // Title
 }
 
-// ex: https://github.com/microsoft/vscode-extension-samples/blob/main/github-authentication-sample/src/extension.ts
 export async function activate(context: vscode.ExtensionContext) {
   console.log("activate");
 
@@ -35,17 +34,13 @@ export async function activate(context: vscode.ExtensionContext) {
     if (!scheme || scheme !== "file") {
       return; // not a file
     }
-    console.log(document.uri);
+    console.log(`current file ${document.uri}`);
 
-    const activeFilePath = document.uri.path;
-    const message = `current file ${activeFilePath}`;
-    console.log(message);
-
-    const origin = (await read(activeFilePath)) || "";
-    const mailOptions: MdmOptions = frontMatter(origin).attributes;
+    const originalText = (await read(document.uri)) || "";
+    const mailOptions: MdmOptions = frontMatter(originalText).attributes;
     console.log("mailOptions", mailOptions);
 
-    const html = md.render(origin);
+    const html = md.render(originalText);
 
     await callMailer(html, mailOptions);
 
